@@ -1,0 +1,46 @@
+create table linuxdb.extr_site_configuration (
+  site_id varchar(25) not null,
+  site_name varchar(100) null,
+  url varchar(2000) null,
+  template_id varchar(50) null,
+  base_url varchar(2000) null,
+  last_extraction_date datetime null,
+  date_format varchar(45) null,
+  table_start_xpath varchar(2000) null,
+  header_row_classname varchar(100) null,
+  detail_content_xpath varchar(2000) null,
+  head_htmltag varchar(10000) null,
+  to_recipient_list varchar(1000) null,
+  enabled boolean;
+  primary key (site_id));
+  
+  
+  create table linuxdb.extr_run_status (
+  site_id varchar(25) not null,
+  last_publish_date datetime null,
+  run_status varchar(45) null,
+  last_run_date datetime null,
+  update_date datetime null,
+  primary key (site_id));
+  
+  
+  create table linuxdb.extr_run_audit_log (
+  id int not null auto_increment,
+  site_id varchar(25) not null,
+  run_completion_date datetime null,
+  run_start_date datetime null,
+  run_completion_status varchar(45) null,
+  primary key (id));
+  
+alter table linuxdb.extr_run_status
+add foreign key (site_id) references linuxdb.extr_site_configuration(site_id);
+
+
+create table linuxdb.extr_run_syncpoint (
+  id int not null auto_increment,
+  job_id varchar(100) not null,
+  run_status varchar(100) null,
+  primary key (id),
+  constraint extr_uc_run_syncpoint unique (job_id)
+  );
+  
